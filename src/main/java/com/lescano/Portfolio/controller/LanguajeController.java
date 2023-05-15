@@ -1,0 +1,68 @@
+package com.lescano.Portfolio.controller;
+
+import com.lescano.Portfolio.entity.Languaje;
+import com.lescano.Portfolio.service.LanguajeService;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("languaje") //localhost:8080/languaje
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"https://frontend-26218.web.app/"})
+public class LanguajeController {
+    
+    @Autowired
+    LanguajeService languajeServ;
+    
+    @GetMapping ("/list")
+    @ResponseBody
+    public List <Languaje> getLanguajes(){
+        return languajeServ.getLanguajes();
+    }
+    
+    @GetMapping ("/view/{id}")
+    @ResponseBody
+    public Languaje viewLanguaje(@PathVariable int id) {
+        return languajeServ.findLanguaje(id);
+    }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping ("/create")
+    public void addLanguaje (@RequestBody Languaje languaje) {
+        languajeServ.createLanguaje(languaje);
+//        return "The Languaje was created successfully";
+    }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping ("/delete/{id}")
+    public void deleteLanguaje(@PathVariable int id) {
+        languajeServ.deleteLanguaje(id);
+//        return "The Languaje was deleted successfully";
+    }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping ("/update")
+    public void updateLanguaje(@RequestBody Languaje languaje) {
+        languajeServ.updateLanguaje(languaje);
+//        return "The Languaje was updated successfully";
+    }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping ("/update/{id}")
+    public void updateLanguajeById(@PathVariable int id, Languaje languaje) {
+        languajeServ.updateLanguaje(languaje);
+//        return "The Languaje was updated successfully";
+    }
+    
+}
